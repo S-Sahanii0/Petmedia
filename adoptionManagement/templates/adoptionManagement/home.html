@@ -1,0 +1,165 @@
+{% extends "account\base.html" %}
+{% load static %}
+
+{% block content %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="author" content="colorlib.com">
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+<link href="{% static 'css/search.css' %}" rel="stylesheet" />
+
+<link href="{% static 'css/card.css' %}" rel="stylesheet" media="all">
+<header>
+  <style>
+    .carousel-item {
+      height: 90vh;
+      min-height: 350px;
+      background: no-repeat center center scroll;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+  </style>
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <!-- Slide One - Set the background image for this slide in the line below -->
+      <div class="carousel-item active"
+        style="background-image: url('{% static '/images/try2.jpg' %}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4"  style="font-family: emoji;  font-size: 50px;">Do something that matters.</h2>
+          <p class="lead" style="color: #3E8989; font-size: 50px; font-family: emoji;" >"Adopt"</p>
+        </div>
+      </div>
+      <!-- Slide Two - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('{% static '/images/dog2.jpg' %}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4"  style="font-family: emoji;  font-size: 50px;">Do something that matters.</h2>
+          <p class="lead" style="color: #3E8989; font-size: 50px; font-family: emoji;" >"Adopt"</p>
+        </div>
+      </div>
+      <!-- Slide Three - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('{% static '/images/dog1.jpg' %}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4"  style="font-family: emoji;  font-size: 50px;">Do something that matters.</h2>
+          <p class="lead" style="color: #3E8989; font-size: 50px; font-family: emoji;" >"Adopt"</p>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</header>
+
+<script src="{% static 'js/extention/choices.js' %}"></script>
+{% if request.user.is_authenticated %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="s130">
+  <form method="GET">
+    <div class="inner-form">
+      <div class="input-field first-wrap">
+        <div class="svg-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+            </path>
+          </svg>
+        </div>
+        <input type="search" placeholder="What are you looking for?" name="q" />
+      </div>
+      <div class="input-field second-wrap">
+        <button type="submit" class="btn-search">SEARCH</button>
+      </div>
+    </div>
+    <span class="info">ex. German Shepard, Stray dog, Golden retriever</span>
+  </form>
+</div>
+{% if dog %}
+
+<div class="col-lg-9 mx-auto">
+  <div class="row mx-auto">
+    {% for dog in dog %}
+
+    <div class="card mx-auto mb-3" style="width: 22rem;">
+      <div class="embed-responsive embed-responsive-1by1">
+        <img class="card-img-top embed-responsive-item img-fluid" src="{{dog.dog_image.url}}" alt="Card image cap">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{dog.breed_name}}</h5>
+        <div class="description">
+          <p class="card-text">
+            <b>Dog id:</b>{{dog.id}}
+            <br>
+            <b>Age:</b>{{dog.dog_age}}
+            <br>
+            <b>Description:</b> {{dog.description}}
+            <br>
+            
+        </div>
+        <br><br><br>
+        <div class="puchhar p-0">
+          {% if user.is_admin %}
+          <a class="reqbtn" href="{% url 'adoptionManagement:updateDog' pk=dog.id %}">Update</a>
+          <a class="reqbtn" href="{% url 'adoptionManagement:deleteDog' dog.id %}">Delete</a>
+          {% else %}
+          
+            <form method="POST" action="{% url 'adoptionManagement:requestDog' pk=dog.id %}">
+              {% csrf_token %}
+              <button class="reqbtn" type="submit">Request</button>
+            </form>
+          
+          {% endif %}
+        </div>
+        </p>
+        <br><br>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% else %}
+"no results"
+{% endif %}
+{% else %}
+<h1 class="headingg">Our Story</h1>
+<div class="homestory">
+  
+<p class="story">Welcome to petmedia, where you do something that matters, provide a better home for the furry ones. Our Adoption Center is an International Non-governmental organization formed in 2015. We focus on effectively finding a warm home for our little furry angels. </p>
+<img src="/media/adoption.jpg" height="300" width="800">
+</div>
+
+
+{% endif %}
+
+<script type="text/javascript">
+  document.getElementById("id_q").value = "{{query}}"
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock %}

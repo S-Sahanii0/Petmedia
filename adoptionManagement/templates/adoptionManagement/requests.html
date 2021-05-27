@@ -1,0 +1,47 @@
+{% extends "account\base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<link href="{% static 'css/card.css' %}" rel="stylesheet" media="all">
+
+
+{% if requests %}
+
+<div class="col-lg-9 mx-auto">
+  <div class="row mx-auto">
+    {% for requests in requests %}
+
+    <div class="card mx-auto mb-3" style="width: 22rem;">
+      <div class="embed-responsive embed-responsive-1by1">
+        <img class="card-img-top embed-responsive-item img-fluid" src="{{requests.dog.dog_image.url}}" alt="Card image cap">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{requests.dog.breed_name}}</h5>
+        <div class="description">
+          <p class="card-text">
+            <b>Requested by:</b>{{requests.user.email}}
+            <br>
+            <!-- <b>Dog ID:</b> {{requests.dog.id}} -->
+            <b>Contact No.:</b>{{requests.user.phone_number}}
+            <br>
+        </div>
+        <br><br><br>
+        
+        <div class="puchhar p-0">
+          <a class = "reqbtn" href="{% url 'adoptionManagement:acceptRequest' pk=requests.id %}">Accept</a> <a class = "reqbtn" href="{% url 'adoptionManagement:declineRequest' pk=requests.id %}">Decline</a>
+        </div>
+        
+        </p>
+        <br><br>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% else %}
+"no results"
+{% endif %}
+
+{% endblock %}

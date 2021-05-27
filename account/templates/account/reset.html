@@ -1,0 +1,33 @@
+{% extends "account\base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <h2 class="title">Reset your password</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="input-group">
+                        {{form}}
+                        {% render_field field class="input--style-1" autocomplete="off" %}
+                        
+                    </div>
+                
+                    <div class="p-t-20">
+                        <button class="btn btn--radius btn--green" type="submit">Change password</button>
+                    </div> 
+                    
+                    {% for error in field.errors %}
+                        <small style="color: red;">{{error}}</small>
+                    {% endfor %}
+                </form>
+               
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

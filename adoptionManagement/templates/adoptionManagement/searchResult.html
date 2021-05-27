@@ -1,0 +1,91 @@
+{% extends "account\base.html" %}
+{% load static %}
+
+{% block content %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link href="{% static 'css/search.css' %}" rel="stylesheet" />
+
+<link href="{% static 'css/card.css' %}" rel="stylesheet" media="all">
+    
+<div class="s130">
+  <form method="GET">
+    <div class="inner-form">
+      <div class="input-field first-wrap">
+        <div class="svg-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+          </svg>
+        </div>
+        <input id="search" type="text" placeholder="What are you looking for?" name="q" id="id_q"/>
+      </div>
+      <div class="input-field second-wrap">
+        <button class="btn-search" type="button">SEARCH</button>
+      </div>
+    </div>
+    
+  </form>
+</div>
+<script src="{% static 'js/extention/choices.js' %}"></script>
+{% if request.user.is_authenticated %}
+{% if dog %}
+
+<div class="container mt-2">
+  <div class="row">
+    {% for dog in dog %}
+    <div class="col-md-3 col-sm-6">
+     
+      <div class="card card-block">
+
+        <img class="card-img-top" src="{{dog.dog_image.url}}" alt="Card image cap" height="400" width="400">
+        <h5 class="card-title mt-3 mb-3">{{dog.breed_name}}</h5>
+        <p class="card-text">
+          <b>Dog id:</b>{{dog.id}}
+          <br>
+          <b>Age:</b>{{dog.dog_age}}
+          <br>
+          <b>Description:</b> {{dog.description}}
+          <br>
+          {% if dog.status %}
+          <b>Status:</b>Available
+          {% else %}
+          <b>Status:</b>Booked
+          {% endif %}
+          <br>
+          {% if user.is_admin %}
+          <a class="reqbtn" href="{% url 'adoptionManagement:updateDog' pk=dog.id %}">Update</a> <a class="reqbtn"
+            href="{% url 'adoptionManagement:deleteDog' dog.id %}">Delete</a>
+          {% else %}
+          {% if dog.status %}
+        <form method="POST" action="{% url 'adoptionManagement:requestDog' pk=dog.id %}">
+          {% csrf_token %}
+          <button class="reqbtn" type="submit">Request</button>
+        </form>
+        {% else %}
+        <button class="reqbtn" type="submit">Requested</button>
+        {% endif %}
+        {% endif %}
+        </p>
+        </div>
+        
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% else %}
+  "no results"
+  {% endif %}
+  {% else %}
+  <p>Welcome to petmedia, where you do something that matters, provide a better home for the furry ones</p>
+
+  {% endif %}
+
+  <script type="text/javascript">
+    document.getElementById("id_q").value = "{{query}}"
+  </script>
+
+  {% endblock %}

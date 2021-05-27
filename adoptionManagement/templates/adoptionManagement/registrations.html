@@ -1,0 +1,47 @@
+{% extends "account\base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link href="{% static 'css/card.css' %}" rel="stylesheet" media="all">
+{% if registrations %}
+
+<div class="col-lg-9 mx-auto">
+  <div class="row mx-auto">
+    {% for queue in registrations %}
+
+    <div class="card mx-auto mb-3" style="width: 22rem;">
+      <div class="embed-responsive embed-responsive-1by1">
+        <img class="card-img-top embed-responsive-item img-fluid" src="{{queue.image.url}}" alt="Card image cap">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{queue.dog_name}}</h5>
+        <div class="description">
+          <p class="card-text">
+            <b>Age:</b>{{queue.age}}
+            <br>
+            <b>Reason for adoption:</b> {{queue.reason}}
+            <br>
+            <b>FurtherInformation:</b> {{queue.further_info}}
+            <br>
+            <b>Registered by:</b> {{queue.user.fullname}}
+            <br>
+            <b>Contact No.:</b>{{queue.user.phone_number}}
+        </div>
+        <br><br><br>
+        <div class="puchhar p-0">
+          <a class="reqbtn" href="{% url 'adoptionManagement:acceptRegistration' pk=queue.id %}">Accept</a>
+        </div>
+        </p>
+        <br><br>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% else %}
+"no results"
+{% endif %}
+
+{% endblock %}

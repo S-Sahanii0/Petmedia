@@ -1,0 +1,48 @@
+{% extends "account\base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+    
+{% block content %}
+
+<link href="{% static 'css/profile.css' %}" rel="stylesheet" media="all"/>
+<!-- Be sure to click Kate's head! -->
+
+<div class="container">
+    <div class="card">
+        <header>
+            <div class="controls">
+                <div class="controls__back">
+
+                </div>
+               
+            </div>
+            <figure>
+                <img src="{{user.profile.profile_picture.url}}" height="200">
+            </figure>
+            <h1>
+                {{user.username}} 
+                 <span class="verification" title="Verified Bat">
+                   </span>
+            </h1>
+            <h2>{{user.fullname}}</h2>
+            <p>{{user.email}}
+                <br>
+                {{user.phone_number}}
+                <br>
+                {{user.address}}
+            </p>
+            <div class="fix">
+                <a class = "reqbtn" href="{% url 'account:updateProfile' %}">Edit Profile</a>
+                <a class = "reqbtn" href="{% url 'account:password_change' %}">Change Password</a>
+            </div>
+            
+            
+       
+        
+    </div>
+    
+   
+</div>
+
+
+{% endblock %}

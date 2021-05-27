@@ -1,0 +1,28 @@
+{% extends "account\base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <p><b>Scan your dog</b></p>
+                <form action ="" method="POST" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    <div class="space">
+                        <input name="dog" type="file"/>
+                        <h5>The breed name of the dog is <b>{{predictedLabel}}</b></h5>
+                    <input class="btn btn--radius btn--green" type="submit">
+                    </div>
+                    <div class="text-center">
+                        <img src= {{filePathName}} height="400" width="400" class="img-fluid">
+                        {{filePathName}}
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

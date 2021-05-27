@@ -1,0 +1,23 @@
+{% extends "account\base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <p><b>Are you sure you want to cancel {{req.dog}}'s adoption request?</b></p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="space">
+                        <a class = "btn btn--radius btn--green" href="{% url 'adoptionManagement:home' %}">No</a>
+                    <button class="btn btn--radius btn--green" type="submit">Yes</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

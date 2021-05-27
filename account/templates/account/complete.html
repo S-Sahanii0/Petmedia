@@ -1,0 +1,16 @@
+{% extends "account\base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <h2 class="title">Reset your password</h2>
+               <p>Your password has been set. You may go aahead and login now</p>
+               <p> <a href="{% url 'account:login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
